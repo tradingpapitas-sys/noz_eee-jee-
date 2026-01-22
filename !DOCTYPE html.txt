@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Corazón Vital</title>
+    <style>
+        body { text-align: center; font-family: sans-serif; background: #f0f0f0; }
+        
+        /* Contenedor del Corazón */
+        #escena { height: 300px; display: flex; justify-content: center; align-items: center; position: relative; }
+        
+        #corazon {
+            width: 100px; height: 100px;
+            background-color: red;
+            position: relative;
+            transform: rotate(-45deg);
+            transition: all 0.5s;
+        }
+        #corazon::before, #corazon::after {
+            content: ""; width: 100px; height: 100px;
+            background-color: red; border-radius: 50%;
+            position: absolute; transition: all 0.5s;
+        }
+        #corazon::before { top: -50px; left: 0; }
+        #corazon::after { left: 50px; top: 0; }
+
+        /* ANIMACIONES */
+        .latido-feliz { animation: latido 0.6s infinite alternate; }
+        .latido-triste { animation: latido 2s infinite; filter: grayscale(80%); transform: rotate(-45deg) scale(0.8); }
+        .sucio { filter: sepia(1) hue-rotate(50deg); } /* Color verdoso */
+
+        @keyframes latido {
+            to { transform: rotate(-45deg) scale(1.2); }
+        }
+
+        .stats { margin: 20px; padding: 10px; background: white; border-radius: 10px; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <h1>Cuida tu Corazón</h1>
+    
+    <div id="escena">
+        <div id="corazon" class="latido-feliz"></div>
+    </div>
+
+    <div class="stats">
+        <p>Amor Propio: <span id="autoestima">100</span>%</p>
+        <p>Higiene: <span id="higiene">100</span>%</p>
+    </div>
+
+    <br>
+    <button onclick="alimentar()">🍎 Alimentar</button>
+    <button onclick="lavar()">🧼 Lavar</button>
+    <button onclick="darCariño()">🧸 Dar Peluche</button>
+
+    <script>
+        let autoestima = 100;
+        let higiene = 100;
+        const corazon = document.getElementById('corazon');
+
+        function actualizarVisuales() {
+            document.getElementById('autoestima').innerText = autoestima;
+            document.getElementById('higiene').innerText = higiene;
+
+            // Lógica de animaciones
+            corazon.className = ""; // Limpiar clases
+            
+            if (autoestima < 40) {
+                corazon.classList.add('latido-triste');
+            } else {
+                corazon.classList.add('latido-feliz');
+            }
+
+            if (higiene < 50) {
+                corazon.classList.add('sucio');
+            }
+        }
+
+        function alimentar() {
+            autoestima = Math.min(100, autoestima + 10);
+            actualizarVisuales();
+        }
+
+        function lavar() {
+            higiene = 100;
+            actualizarVisuales();
+        }
+
+        function darCariño() {
+            autoestima = Math.min(100, autoestima + 20);
+            alert("¡Te sientes mejor contigo mismo!");
+            actualizarVisuales();
+        }
+
+        // El tiempo pasa...
+        setInterval(() => {
+            autoestima = Math.max(0, autoestima - 1);
+            higiene = Math.max(0, higiene - 1);
+            actualizarVisuales();
+        }, 3000); // Cada 3 segundos baja un poco
+    </script>
+</body>
+</html>
